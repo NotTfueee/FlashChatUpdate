@@ -10,6 +10,7 @@ import FirebaseAuth
 import FBSDKLoginKit
 
 
+
 class LoginViewController: UIViewController {
     
     private let scrollView : UIScrollView = {
@@ -77,12 +78,16 @@ class LoginViewController: UIViewController {
         return imageView
     }()
     
-    private let facebookLoginButton = FBLoginButton()
+    private let facebookLoginButton: FBLoginButton = {
+        let button = FBLoginButton()
+        button.permissions = ["email","public_profile"]
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Log In"
+         title = "Log In"
         view.backgroundColor = .white
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register" ,
@@ -94,6 +99,8 @@ class LoginViewController: UIViewController {
         
         emailField.delegate = self
         passwordField.delegate = self
+        
+        facebookLoginButton.delegate = self
         
         
         // add subviews
@@ -142,6 +149,7 @@ class LoginViewController: UIViewController {
     }
     
     @objc private func loginButtonTapped() {
+        
         
         emailField.resignFirstResponder()
         passwordField.resignFirstResponder()
@@ -216,5 +224,44 @@ extension LoginViewController : UITextFieldDelegate
         }
         
         return true
+    }
+}
+
+
+extension LoginViewController : LoginButtonDelegate {
+    
+    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
+//        no operations
+    }
+    
+    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: (any Error)?) {
+        
+        guard let token = result?.token?.tokenString else {
+            
+            print("User failed to login with facebook")
+            return
+        }
+        
+        print("facebook access token : \(token)")
+        
+        let credential = OAuthProvider.credential(withProviderID: "facebook.com", accessToken: "EAAXNgdImDSABO0EQzfrrzZCNIzE5rhNcenyYOZAc31AZCGADApd7N5DzzS7XXFDKVFSgyTtJIeMFbKmhZAu3Wa2GkZBd27aMrWrMtd6Qw1IEh9WgibYZAfwPhoPEFJ7SaOKMoptCVO9LxAZAgwHMh1vqIirN42Drs1d3aEZAGhOtM5t1mF9so313RpoP7SZBNyt5K1bvz4N2yPhMs4cISBZA4FhXDaf6PdZBtLZCSrc02vrQlTZC71HZCasmgjahRKcCABnwLBfQ5pM6y85FAZD")
+
+        FirebaseAuth.Auth.auth().signIn(with: credential , completion: {[weak self] authResult , error in
+            
+            guard let strongSelf = self else{
+                return
+            }
+            guard authResult != nil , error == nil else{
+                
+                if let error = error{
+                    print("Facebook credentials login failed MFA may be needed - \(error) ")
+                }
+                return
+                
+            }
+            
+            print("Successfully logged user in")
+            strongSelf.navigationController?.dismiss(animated: true , completion: nil)
+        })
     }
 }
