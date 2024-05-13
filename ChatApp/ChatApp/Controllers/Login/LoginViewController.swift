@@ -282,7 +282,7 @@ extension LoginViewController : LoginButtonDelegate {
             })
             
             
-            let credential = OAuthProvider.credential(withProviderID: "facebook.com", accessToken: "EAAXNgdImDSABO0EQzfrrzZCNIzE5rhNcenyYOZAc31AZCGADApd7N5DzzS7XXFDKVFSgyTtJIeMFbKmhZAu3Wa2GkZBd27aMrWrMtd6Qw1IEh9WgibYZAfwPhoPEFJ7SaOKMoptCVO9LxAZAgwHMh1vqIirN42Drs1d3aEZAGhOtM5t1mF9so313RpoP7SZBNyt5K1bvz4N2yPhMs4cISBZA4FhXDaf6PdZBtLZCSrc02vrQlTZC71HZCasmgjahRKcCABnwLBfQ5pM6y85FAZD")
+            let credential = OAuthProvider.credential(withProviderID: "facebook.com", accessToken: "EAAXNgdImDSABO75UbvO5l89kxmf72TmqZCS0ZA0tDEBoOSzlSxtbLHrSFOixRUg4KeRBzq0Y5X57QtiG9CGwNR0o8il6ciHODrOfyZAZBiXLd79NTndG2r5ZBQ5p8X3ZAU5Be3wOeZAkRVU3zP9pjQZCmm7T0eGRxqd7IKmNawtMXlM70vZAP8isJxldHZCUAGTkDvZBj0iOPAZBN9kMNMXVIFhUdEpOsoTtkokS3x6U57gumXUZD")
             
             FirebaseAuth.Auth.auth().signIn(with: credential , completion: {[weak self] authResult , error in
                 
