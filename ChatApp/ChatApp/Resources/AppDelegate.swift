@@ -11,6 +11,7 @@
 import UIKit
 import FBSDKCoreKit
 import Firebase
+import JGProgressHUD
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

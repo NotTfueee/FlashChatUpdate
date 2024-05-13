@@ -24,6 +24,7 @@
 		230A55372BEF595D00F61314 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230A55362BEF595D00F61314 /* ProfileViewController.swift */; };
 		230A553A2BEF614B00F61314 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230A55392BEF614B00F61314 /* Extensions.swift */; };
 		23973E052BF0B7DD00303FBD /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23973E042BF0B7DD00303FBD /* DatabaseManager.swift */; };
+		23BF20752BF2D2560051C4D0 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BF20742BF2D2560051C4D0 /* ChatViewController.swift */; };
 		23D875592BEFE661002B3DC7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 23D875582BEFE661002B3DC7 /* GoogleService-Info.plist */; };
 		A263F78E61EF8F1CA2CEFEC7 /* Pods_ChatApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09A29F69049D1C750F8AE27D /* Pods_ChatApp.framework */; };
 		E6B783D19648C9474413CE27 /* Pods_ChatAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFE29C9DED3EF84BA7348664 /* Pods_ChatAppTests.framework */; };
@@ -72,6 +73,7 @@
 		230A55362BEF595D00F61314 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		230A55392BEF614B00F61314 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		23973E042BF0B7DD00303FBD /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		23BF20742BF2D2560051C4D0 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		23D875582BEFE661002B3DC7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		85031B403CB03ED9167F4B5A /* Pods-ChatApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatApp.debug.xcconfig"; path = "Target Support Files/Pods-ChatApp/Pods-ChatApp.debug.xcconfig"; sourceTree = "<group>"; };
 		882D52A8C7A8C97BD7D11E08 /* Pods-ChatAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatAppTests.debug.xcconfig"; path = "Target Support Files/Pods-ChatAppTests/Pods-ChatAppTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 				230A55322BEF592F00F61314 /* VideoPlayerViewController.swift */,
 				230A55342BEF594200F61314 /* NewConversationViewController.swift */,
 				230A55362BEF595D00F61314 /* ProfileViewController.swift */,
+				23BF20742BF2D2560051C4D0 /* ChatViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -500,6 +503,7 @@
 				230A54F72BEF541700F61314 /* AppDelegate.swift in Sources */,
 				230A55372BEF595D00F61314 /* ProfileViewController.swift in Sources */,
 				230A54F92BEF541700F61314 /* SceneDelegate.swift in Sources */,
+				23BF20752BF2D2560051C4D0 /* ChatViewController.swift in Sources */,
 				230A55312BEF591A00F61314 /* PhotoViewerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
