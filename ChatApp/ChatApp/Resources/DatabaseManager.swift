@@ -13,6 +13,12 @@ final class DatabaseManager
     static let shared = DatabaseManager()
     
     private let database = Database.database().reference()
+    
+    static func safeEmail(emailAddress: String) -> String {
+        var safeEmail = emailAddress.replacingOccurrences(of: ".", with: "-")
+        safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
+        return safeEmail
+    }
 }
 
 // MARK:- ACCOUNT MANAGEMENT
@@ -48,7 +54,7 @@ extension DatabaseManager{
             }
 
             guard error == nil else {
-                print("failed ot write to database")
+                print("failed to write to database")
                 completion(false)
                 return
             }

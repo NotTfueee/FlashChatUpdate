@@ -148,7 +148,7 @@ class LoginViewController: UIViewController {
                                            width : scrollView.width-60,
                                            height : 52)
         
-        facebookLoginButton .frame.origin.y = loginButton.bottom+20
+//        facebookLoginButton .frame.origin.y = loginButton.bottom+20
         
     }
     
@@ -190,6 +190,8 @@ class LoginViewController: UIViewController {
             
             let user = result.user
             print("Logged in user : \(user)")
+            
+            UserDefaults.standard.set(email , forKey: "email")
             
             strongSelf.navigationController?.dismiss(animated: true , completion: nil)
             
@@ -254,14 +256,10 @@ extension LoginViewController : LoginButtonDelegate {
         }
         
         let facebookRequest = FBSDKLoginKit.GraphRequest(graphPath: "me",
-                                                         parameters: ["fields":
-                                                            "email, first_name, last_name, picture.type(large)"],
+                                                         parameters: ["fields":"email, first_name, last_name, picture.type(large)"],
                                                          tokenString: token,
                                                          version: nil,
                                                          httpMethod: .get)
-        
-        
-      
         
         
         facebookRequest.start(completion: { _, result, error in
@@ -294,6 +292,8 @@ extension LoginViewController : LoginButtonDelegate {
                     DatabaseManager.shared.insertUser(with: chatUser, completion: { success in
                         if success {
 
+                            // upload image
+                            
                             guard let url = URL(string: pictureUrl) else {
                                 return
                             }
@@ -309,14 +309,17 @@ extension LoginViewController : LoginButtonDelegate {
                                 print("got data from FB, uploading...")
 
                                 // upload image
+                                
                                 let filename = chatUser.profilePictureFileName
-                                StorageManager.shared.uploadProfilePicture(with: data, fileName: filename, completion: { result in
+                                StorageManager.shared.uploadProfilePicture(with: data,
+                                                                           fileName: filename,
+                                                                           completion: { result in
                                     switch result {
                                     case .success(let downloadUrl):
                                         UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
                                         print(downloadUrl)
                                     case .failure(let error):
-                                        print("Storage maanger error: \(error)")
+                                        print("Storage manager error: \(error)")
                                     }
                                 })
                             }).resume()
@@ -325,7 +328,7 @@ extension LoginViewController : LoginButtonDelegate {
                 }
             })
 
-            let credential = OAuthProvider.credential(withProviderID: "facebook.com", accessToken: "EAAXNgdImDSABOZBXQw8n5s2SNMg7fcJQl5ityHMBKxppu3IraZARw2tszAOZAgI610CcZAW522Tmk2V4kZBl21klDgbZB9MUUTpeZC8FMc8zTepNqrhBXLXKrnXXLSqwLvxyYDdm2mYZBQG78cZAcv4ve2lTFE6AnIlLAeydNBmWPOrRCwk5SZCIuEpm4r1OajZAACGSNUNnZAwAELsZA2DMbiKzjMT8MZBzg3wrPhCgZDZD")
+            let credential = OAuthProvider.credential(withProviderID: "facebook.com", accessToken: "EAAXNgdImDSABO3EvhhVmqvGiTT6TTZCKXuC4bYCp1DY6z4UhLaNEn0RvfZCH4nbpsGAHQFdQoMnJVZCUNlzbf905cZAYZAMUki0zHKzgsVIRIbUg4i5TCVZCiV73YPQOjxyAisY5uieMoeZBBDfKy7bVvIHSExmjtm9jsivIY4z4gic8KBomxOwgenVEBlOZBo0apQgoRjKeCX3us9pyK8PQ7cFqOLf4Ae4GfSim8LWW4LDZC4ulgngPpFthteYzMySF9dQZDZD")
             FirebaseAuth.Auth.auth().signIn(with: credential, completion: { [weak self] authResult, error in
                 guard let strongSelf = self else {
                     return

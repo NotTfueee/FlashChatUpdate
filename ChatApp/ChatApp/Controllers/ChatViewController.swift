@@ -10,10 +10,10 @@ import MessageKit
 
 struct Message : MessageType {
     
-    var sender: any MessageKit.SenderType
+    var sender: SenderType
     var messageId: String
     var sentDate: Date
-    var kind: MessageKit.MessageKind
+    var kind: MessageKind
 }
 
 struct Sender : SenderType {
@@ -52,7 +52,7 @@ class ChatViewController: MessagesViewController {
 
 extension ChatViewController : MessagesDataSource , MessagesLayoutDelegate , MessagesDisplayDelegate {
     
-    func currentSender() -> any MessageKit.SenderType {
+    func currentSender() -> any SenderType {
         return selfSender
     }
     

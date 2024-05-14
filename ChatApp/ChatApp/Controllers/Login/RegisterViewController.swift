@@ -256,6 +256,7 @@ class RegisterViewController: UIViewController {
                                            emailAddress: email)
                 
                 DatabaseManager.shared.insertUser(with: chatUser , completion: { success in
+                    
                     if success {
                         // upload image
                         guard let image = strongSelf.imageView.image,
@@ -272,7 +273,7 @@ class RegisterViewController: UIViewController {
                                                      UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
                                                      print(downloadUrl)
                                                  case .failure(let error):
-                                                     print("Storage maanger error: \(error)")
+                                                     print("Storage manager error: \(error)")
                                                  }
                                              })
                     }

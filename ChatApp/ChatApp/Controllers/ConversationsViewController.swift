@@ -106,7 +106,7 @@ extension ConversationsViewController : UITableViewDelegate , UITableViewDataSou
         tableView.deselectRow(at: indexPath, animated: true)
         
         let vc = ChatViewController()
-        vc.title = "Jenny Smith"
+        vc.title = "Joe Smith"
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
     }
