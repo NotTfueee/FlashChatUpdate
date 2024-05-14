@@ -83,7 +83,7 @@ class ProfileViewController: UIViewController {
                 
                 imageView.image = image
                 
-//                self.tableView.reloadData()
+                self.tableView.reloadData()
 
             }
         }).resume()
