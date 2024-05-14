@@ -286,9 +286,44 @@ extension LoginViewController : LoginButtonDelegate {
             DatabaseManager.shared.userExists(with: email , completion: {exists in
                 
                 if !exists {
-                    DatabaseManager.shared.insertUser(with: ChatAppUser(firstName: firstName,
-                                                                        lastName: lastName,
-                                                                        emailAddress: email))
+                    
+                    let chatUser = ChatAppUser(firstName: firstName,
+                                               lastName: lastName,
+                                               emailAddress: email)
+                    DatabaseManager.shared.insertUser(with: chatUser , completion: {success in
+                    
+                        
+                        if success {
+
+//                            guard let url = URL(string: pictureUrl) else {
+//                                return
+                            }
+
+//                            print("Downloading data from facebook image")
+//
+//                            URLSession.shared.dataTask(with: url, completionHandler: { data, _,_ in
+//                                guard let data = data else {
+//                                    print("Failed to get data from facebook")
+//                                    return
+//                                }
+//
+//                                print("got data from FB, uploading...")
+//
+//                                // upload iamge
+//                                let filename = chatUser.profilePictureFileName
+//                                StorageManager.shared.uploadProfilePicture(with: data, fileName: filename, completion: { result in
+//                                    switch result {
+//                                    case .success(let downloadUrl):
+//                                        UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
+//                                        print(downloadUrl)
+//                                    case .failure(let error):
+//                                        print("Storage maanger error: \(error)")
+//                                    }
+//                                })
+//                            }).resume()
+//                        }
+                        
+                    })
                 }
             })
             
