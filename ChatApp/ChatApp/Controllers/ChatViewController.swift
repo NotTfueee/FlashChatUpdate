@@ -166,20 +166,24 @@ extension ChatViewController : InputBarAccessoryViewDelegate {
         print("\(text)")
         // send message
         
+        let mmessage = Message(sender: selfSender,
+                               messageId: messageId,
+                               sentDate: Date(),
+                               kind: .text(text))
+        
         if isNewConversation{
             // create convon in database
             
-            let mmessage = Message(sender: selfSender,
-                                   messageId: messageId,
-                                   sentDate: Date(),
-                                   kind: .text(text))
+            
             DatabaseManager.shared.createNewConversation(with: otherUserEmail,
                                                          name : self.title ?? "User",
                                                          firstMessage: mmessage,
-                                                         completion: { success in
+                                                         completion: { [weak self]success in
                 
                 if success{
                     print("message sent")
+                    
+                    self?.isNewConversation = false
                 }
                 else {
                     print("failed to send ")
@@ -189,6 +193,17 @@ extension ChatViewController : InputBarAccessoryViewDelegate {
         else
         {
             //append to existing conversation data
+            
+            DatabaseManager.shared.sendMessage(to: otherUserEmail , mmessage: mmessage , completion: {success in
+                
+                if success {
+//                    self?.messageInputBar.inputTextView.text = nil
+                    print("message sent")
+                }
+                else {
+                    print("failed to send")
+                }
+            })
             
             print("checking")
         }

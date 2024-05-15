@@ -21,6 +21,23 @@ final class DatabaseManager
     }
 }
 
+
+extension DatabaseManager {
+
+    /// Returns dictionary node at child path
+    public func getDataFor(path: String, completion: @escaping (Result<Any, Error>) -> Void) {
+        self.database.child("\(path)").observeSingleEvent(of: .value) { snapshot in
+            guard let value = snapshot.value else {
+                completion(.failure(DatabaseError.failedToFetch))
+                return
+            }
+            completion(.success(value))
+        }
+    }
+
+}
+
+
 // MARK:- ACCOUNT MANAGEMENT
 
 extension DatabaseManager{
@@ -191,7 +208,7 @@ extension DatabaseManager {
             let recipient_newConversationData: [String: Any] = [
                 "id": conversationId,
                 "other_user_email": safeEmail,
-                "name": "self",
+                "name": currentNamme,
                 "latest_message": [
                     "date": dateString,
                     "message": message,
