@@ -192,9 +192,14 @@ extension ChatViewController : InputBarAccessoryViewDelegate {
         }
         else
         {
+            
+            guard let conversationId = conversationId , let name = self.title else {
+                return
+            }
+            
             //append to existing conversation data
             
-            DatabaseManager.shared.sendMessage(to: otherUserEmail , mmessage: mmessage , completion: {success in
+            DatabaseManager.shared.sendMessage(to: conversationId , otherUserEmail: otherUserEmail, name : name, newMessage: mmessage , completion: {success in
                 
                 if success {
 //                    self?.messageInputBar.inputTextView.text = nil
