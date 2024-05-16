@@ -24,6 +24,8 @@
 		230A55372BEF595D00F61314 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230A55362BEF595D00F61314 /* ProfileViewController.swift */; };
 		230A553A2BEF614B00F61314 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230A55392BEF614B00F61314 /* Extensions.swift */; };
 		2312253D2BF41F37008BF069 /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312253C2BF41F37008BF069 /* ConversationTableViewCell.swift */; };
+		231C69832BF5FD450079E2E3 /* NewConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231C69822BF5FD450079E2E3 /* NewConversationCell.swift */; };
+		231C69852BF67DF60079E2E3 /* LocationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231C69842BF67DF60079E2E3 /* LocationPickerViewController.swift */; };
 		2388CD332BF35517005B07BC /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2388CD322BF35517005B07BC /* StorageManager.swift */; };
 		23973E052BF0B7DD00303FBD /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23973E042BF0B7DD00303FBD /* DatabaseManager.swift */; };
 		23BF20752BF2D2560051C4D0 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BF20742BF2D2560051C4D0 /* ChatViewController.swift */; };
@@ -75,6 +77,8 @@
 		230A55362BEF595D00F61314 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		230A55392BEF614B00F61314 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		2312253C2BF41F37008BF069 /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
+		231C69822BF5FD450079E2E3 /* NewConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationCell.swift; sourceTree = "<group>"; };
+		231C69842BF67DF60079E2E3 /* LocationPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerViewController.swift; sourceTree = "<group>"; };
 		2388CD322BF35517005B07BC /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		23973E042BF0B7DD00303FBD /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		23BF20742BF2D2560051C4D0 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -178,6 +182,7 @@
 				230A55342BEF594200F61314 /* NewConversationViewController.swift */,
 				230A55362BEF595D00F61314 /* ProfileViewController.swift */,
 				23BF20742BF2D2560051C4D0 /* ChatViewController.swift */,
+				231C69842BF67DF60079E2E3 /* LocationPickerViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -188,6 +193,7 @@
 				230A552B2BEF557F00F61314 /* Storyboards */,
 				230A54FF2BEF541900F61314 /* Assets.xcassets */,
 				2312253C2BF41F37008BF069 /* ConversationTableViewCell.swift */,
+				231C69822BF5FD450079E2E3 /* NewConversationCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -500,6 +506,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				230A552D2BEF583500F61314 /* LoginViewController.swift in Sources */,
+				231C69832BF5FD450079E2E3 /* NewConversationCell.swift in Sources */,
 				23973E052BF0B7DD00303FBD /* DatabaseManager.swift in Sources */,
 				230A552F2BEF586A00F61314 /* RegisterViewController.swift in Sources */,
 				230A55352BEF594200F61314 /* NewConversationViewController.swift in Sources */,
@@ -513,6 +520,7 @@
 				23BF20752BF2D2560051C4D0 /* ChatViewController.swift in Sources */,
 				230A55312BEF591A00F61314 /* PhotoViewerViewController.swift in Sources */,
 				2388CD332BF35517005B07BC /* StorageManager.swift in Sources */,
+				231C69852BF67DF60079E2E3 /* LocationPickerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

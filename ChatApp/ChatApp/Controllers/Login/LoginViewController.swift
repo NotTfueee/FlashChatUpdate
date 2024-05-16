@@ -38,7 +38,7 @@ class LoginViewController: UIViewController {
         
         field.leftView = UIView(frame: CGRect(x : 0 , y : 0 , width : 5 , height : 0))
         field.leftViewMode = .always
-        field.backgroundColor = .white
+        field.backgroundColor = .secondarySystemBackground
         
         
         return field
@@ -57,7 +57,7 @@ class LoginViewController: UIViewController {
         field.isSecureTextEntry = true
         field.leftView = UIView(frame: CGRect(x : 0 , y : 0 , width : 5 , height : 0))
         field.leftViewMode = .always
-        field.backgroundColor = .white
+        field.backgroundColor = .secondarySystemBackground
         
         
         return field
@@ -88,11 +88,21 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+    private var loginObserver: NSObjectProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        loginObserver = NotificationCenter.default.addObserver(forName: .didLogInNotification, object: nil, queue: .main, using: { [weak self] _ in
+            guard let strongSelf = self else {
+                return
+            }
+
+            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+        })
+        
         title = "Log In"
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register" ,
                                                             style : .done ,
@@ -344,7 +354,7 @@ extension LoginViewController : LoginButtonDelegate {
                 }
             })
             
-            let credential = OAuthProvider.credential(withProviderID: "facebook.com", accessToken: "EAAXNgdImDSABOwVPhv8d7nbQXWuZAZC4YwhDojbRlT0ICZBGieAjNdyC1CKnJujkpd4UnyZCwdZCV5p6XU9Lu2fSLlwmsu4AlMAMkZCsmJyldBlSyzPg0JAQuNzO1bGXQBArYiKR4OJ61sDk8YjTqhAVLI6GqnXYFjZCoLhTuBlqOeBhmZAlZAxD4B4SoFU40igdHf4AsJrYgBAZCBYQHREh9pXPEShwxtWXbpizkqNtoDpJkDy772zdSDefILZBRnCLbqVSgZDZD")
+            let credential = OAuthProvider.credential(withProviderID: "facebook.com", accessToken: "EAAXNgdImDSABOysiU3l9mYslZAEVwgqJz1CiLRNbtVqZADFS0aWSnNFhAgnXN84HU7hY5IekqPAGz9oCHuOkv16lLAf54AuEyJhkTQN7PppPnMjDDNWpIvHW3ZC1zvZCU8rFTMZCHLx3BmLgcLm0rvZAIoxTgW91DHfcAZCcCcIdZBm9IKwBRk2FxiZCyST0c13CzZAZBP1wlrHQLhQwtWYLdufr5EdFX1OSpczfh6oBe6rWtZCccDrZCcZAyS26pSBaoHQpSFCwZDZD")
             FirebaseAuth.Auth.auth().signIn(with: credential, completion: { [weak self] authResult, error in
                 guard let strongSelf = self else {
                     return

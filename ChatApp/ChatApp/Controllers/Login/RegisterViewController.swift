@@ -34,7 +34,7 @@ class RegisterViewController: UIViewController {
         
         field.leftView = UIView(frame: CGRect(x : 0 , y : 0 , width : 5 , height : 0))
         field.leftViewMode = .always
-        field.backgroundColor = .white
+        field.backgroundColor = .systemBackground
         
         
         return field
@@ -53,7 +53,7 @@ class RegisterViewController: UIViewController {
         
         field.leftView = UIView(frame: CGRect(x : 0 , y : 0 , width : 5 , height : 0))
         field.leftViewMode = .always
-        field.backgroundColor = .white
+        field.backgroundColor = .systemBackground
         
         
         return field
@@ -72,7 +72,7 @@ class RegisterViewController: UIViewController {
         
         field.leftView = UIView(frame: CGRect(x : 0 , y : 0 , width : 5 , height : 0))
         field.leftViewMode = .always
-        field.backgroundColor = .white
+        field.backgroundColor = .systemBackground
         
         
         return field
@@ -91,7 +91,7 @@ class RegisterViewController: UIViewController {
         field.isSecureTextEntry = true
         field.leftView = UIView(frame: CGRect(x : 0 , y : 0 , width : 5 , height : 0))
         field.leftViewMode = .always
-        field.backgroundColor = .white
+        field.backgroundColor = .systemBackground
         
         
         return field
@@ -124,7 +124,7 @@ class RegisterViewController: UIViewController {
         super.viewDidLoad()
         
         title = "Log In"
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register" ,
                                                             style : .done ,
