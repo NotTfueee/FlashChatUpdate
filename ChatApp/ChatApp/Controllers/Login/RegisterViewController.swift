@@ -175,14 +175,14 @@ class RegisterViewController: UIViewController {
         imageView.layer.cornerRadius = imageView.width / 2.0
         
         firstNameField.frame = CGRect(x : 30,
-                                  y : imageView.bottom+10 ,
-                                  width : scrollView.width-60,
-                                  height : 52)
+                                      y : imageView.bottom+10 ,
+                                      width : scrollView.width-60,
+                                      height : 52)
         
         lastNameField.frame = CGRect(x : 30,
-                                  y : firstNameField.bottom+10 ,
-                                  width : scrollView.width-60,
-                                  height : 52)
+                                     y : firstNameField.bottom+10 ,
+                                     width : scrollView.width-60,
+                                     height : 52)
         
         emailField.frame = CGRect(x : 30,
                                   y : lastNameField.bottom+10 ,
@@ -195,95 +195,87 @@ class RegisterViewController: UIViewController {
                                      height : 52)
         
         registerButton.frame = CGRect(x : 30,
-                                   y : passwordField.bottom+10 ,
-                                   width : scrollView.width-60,
-                                   height : 52)
+                                      y : passwordField.bottom+10 ,
+                                      width : scrollView.width-60,
+                                      height : 52)
         
         
     }
     
     @objc private func registerButtonTapped() {
-        
         emailField.resignFirstResponder()
         passwordField.resignFirstResponder()
         firstNameField.resignFirstResponder()
         lastNameField.resignFirstResponder()
         
         guard let firstName = firstNameField.text,
-              let lastName = lastNameField.text ,
-              let email = emailField.text ,
-              let password = passwordField.text ,
+              let lastName = lastNameField.text,
+              let email = emailField.text,
+              let password = passwordField.text,
               !email.isEmpty,
               !password.isEmpty,
               !firstName.isEmpty,
               !lastName.isEmpty,
-              password.count >= 6 else{
+              password.count >= 6 else {
             alertUserLoginError()
             return
         }
         
         spinner.show(in: view)
         
-        // implementing the login using google firebase
+        // Firebase Log In
         
-        DatabaseManager.shared.userExists(with: email, completion: {[weak self]exists in
-            
-            guard let strongSelf = self else
-            {
+        DatabaseManager.shared.userExists(with: email, completion: { [weak self] exists in
+            guard let strongSelf = self else {
                 return
             }
             
-            DispatchQueue.main.async{
+            DispatchQueue.main.async {
                 strongSelf.spinner.dismiss()
             }
             
             guard !exists else {
-                
+                // user already exists
                 strongSelf.alertUserLoginError(message: "Looks like a user account for that email address already exists.")
-                return;
+                return
             }
             
-            
-            FirebaseAuth.Auth.auth().createUser(withEmail: email , password: password , completion: {authResult , error in
-                
-                guard authResult != nil , error == nil else{
-                    print("Error Creating user")
+            FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: { authResult, error in
+                guard authResult != nil, error == nil else {
+                    print("Error cureating user")
                     return
                 }
+                
+                UserDefaults.standard.setValue(email, forKey: "email")
+                UserDefaults.standard.setValue("\(firstName) \(lastName)", forKey: "name")
+                
                 
                 let chatUser = ChatAppUser(firstName: firstName,
                                            lastName: lastName,
                                            emailAddress: email)
-                
-                DatabaseManager.shared.insertUser(with: chatUser , completion: { success in
-                    
+                DatabaseManager.shared.insertUser(with: chatUser, completion: { success in
                     if success {
                         // upload image
                         guard let image = strongSelf.imageView.image,
                               let data = image.pngData() else {
                             return
                         }
-                        
                         let filename = chatUser.profilePictureFileName
-                                             StorageManager.shared.uploadProfilePicture(with: data,
-                                                                                        fileName: filename,
-                                                                                        completion: { result in
-                                                 switch result {
-                                                 case .success(let downloadUrl):
-                                                     UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
-                                                     print(downloadUrl)
-                                                 case .failure(let error):
-                                                     print("Storage manager error: \(error)")
-                                                 }
-                                             })
+                        StorageManager.shared.uploadProfilePicture(with: data, fileName: filename, completion: { result in
+                            switch result {
+                            case .success(let downloadUrl):
+                                UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
+                                print(downloadUrl)
+                            case .failure(let error):
+                                print("Storage maanger error: \(error)")
+                            }
+                        })
                     }
                 })
                 
-                strongSelf.navigationController?.dismiss(animated: true , completion: nil)
+                strongSelf.navigationController?.dismiss(animated: true, completion: nil)
             })
-            
         })
-        
     }
     
     func alertUserLoginError(message : String = "Please enter all the information correctly to register yourself to the App , Make sure that the password is atleast 6 characters long")

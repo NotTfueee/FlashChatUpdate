@@ -61,8 +61,6 @@ class ConversationsViewController: UIViewController {
         view.addSubview(tableView)
         view.addSubview(noConversationsLabel)
         setUpTableView()
-        
-        fetchConversations()
         startListeningForConversations()
         
         loginObserver = NotificationCenter.default.addObserver(forName: .didLogInNotification, object: nil, queue: .main, using: { [weak self] _ in
@@ -169,6 +167,10 @@ class ConversationsViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
+        noConversationsLabel.frame = CGRect(x: 10,
+                                            y: (view.height-100)/2,
+                                            width: view.width-20,
+                                            height: 100)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -196,11 +198,7 @@ class ConversationsViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
     }
-    
-    private func fetchConversations()
-    {
-        tableView.isHidden = false
-    }
+
 }
 
 extension ConversationsViewController : UITableViewDelegate , UITableViewDataSource {
@@ -249,11 +247,12 @@ extension ConversationsViewController : UITableViewDelegate , UITableViewDataSou
             self.conversations.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .left)
 
-            DatabaseManager.shared.deleteConversation(conversationId: conversationId, completion: {[weak self] success in
+            DatabaseManager.shared.deleteConversation(conversationId: conversationId, completion: { [weak self]success in
                 if success {
+                    // add model and row back and show error alert
                     self?.conversations.remove(at: indexPath.row)
                     tableView.deleteRows(at: [indexPath], with: .left)
-                    
+
                 }
             })
 

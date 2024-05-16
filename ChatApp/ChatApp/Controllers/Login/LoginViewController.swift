@@ -354,7 +354,7 @@ extension LoginViewController : LoginButtonDelegate {
                 }
             })
             
-            let credential = OAuthProvider.credential(withProviderID: "facebook.com", accessToken: "EAAXNgdImDSABOysiU3l9mYslZAEVwgqJz1CiLRNbtVqZADFS0aWSnNFhAgnXN84HU7hY5IekqPAGz9oCHuOkv16lLAf54AuEyJhkTQN7PppPnMjDDNWpIvHW3ZC1zvZCU8rFTMZCHLx3BmLgcLm0rvZAIoxTgW91DHfcAZCcCcIdZBm9IKwBRk2FxiZCyST0c13CzZAZBP1wlrHQLhQwtWYLdufr5EdFX1OSpczfh6oBe6rWtZCccDrZCcZAyS26pSBaoHQpSFCwZDZD")
+            let credential = OAuthProvider.credential(withProviderID: "facebook.com", accessToken: "EAAXNgdImDSABOZBgLzopL7t0ZCiVfwq9OoiNCAe6CWYnyLjGZAKfvT0Kzs7Gl6JdItVvOp59ebJZCpqw90s0IVXmpUhuZAGP8mwjBXPIO8l1Jbsp9pDwbRtNSYwc87nivfZBFLvtNRYYmOsx9f1miZByG7pvZBBFO8DZBCEpmq14YN3xy6KEGd4ivzqKgOsWgZAdzxI3JPs9UmPmge7Me96YZBR2YEKi2CnFZCeJOi7Ptru0H4iTSBMwSjk4rYyWQbVgnkQ5UMgZD")
             FirebaseAuth.Auth.auth().signIn(with: credential, completion: { [weak self] authResult, error in
                 guard let strongSelf = self else {
                     return

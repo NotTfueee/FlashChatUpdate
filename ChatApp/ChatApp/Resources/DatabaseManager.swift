@@ -28,7 +28,7 @@ extension DatabaseManager {
     
     /// Returns dictionary node at child path
     public func getDataFor(path: String, completion: @escaping (Result<Any, Error>) -> Void) {
-        self.database.child("\(path)").observeSingleEvent(of: .value) { snapshot in
+        database.child("\(path)").observeSingleEvent(of: .value) { snapshot in
             guard let value = snapshot.value else {
                 completion(.failure(DatabaseError.failedToFetch))
                 return
@@ -680,9 +680,9 @@ extension DatabaseManager {
             return
         }
         let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
-        
+
         print("Deleting conversation with id: \(conversationId)")
-        
+
         // Get all conversations for current user
         // delete conversation in collection with target id
         // reset those conversations for the user in database
@@ -692,13 +692,13 @@ extension DatabaseManager {
                 var positionToRemove = 0
                 for conversation in conversations {
                     if let id = conversation["id"] as? String,
-                       id == conversationId {
+                        id == conversationId {
                         print("found conversation to delete")
                         break
                     }
                     positionToRemove += 1
                 }
-                
+
                 conversations.remove(at: positionToRemove)
                 ref.setValue(conversations, withCompletionBlock: { error, _  in
                     guard error == nil else {

@@ -70,6 +70,9 @@ struct Media: MediaItem {
 
 class ChatViewController: MessagesViewController {
     
+    private var senderPhotoURL: URL?
+    private var otherUserPhotoURL: URL?
+    
     public static let dateFormatter: DateFormatter = {
         let formattre = DateFormatter()
         formattre.dateStyle = .medium
@@ -79,7 +82,7 @@ class ChatViewController: MessagesViewController {
     }()
     
     public let otherUserEmail : String
-    private let conversationId : String?
+    private var conversationId : String?
     public var isNewConversation = false
     
     
@@ -126,6 +129,8 @@ class ChatViewController: MessagesViewController {
         messagesCollectionView.messageCellDelegate = self
         messageInputBar.delegate = self
         setupInputButton()
+        
+        
         
     }
     
@@ -426,82 +431,70 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
 extension ChatViewController : InputBarAccessoryViewDelegate {
     
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
-        guard !text.replacingOccurrences(of: " ", with: "").isEmpty ,
-              let selfSender = self.selfSender ,
-              let messageId = createMessageId() else{
-            return
+        guard !text.replacingOccurrences(of: " ", with: "").isEmpty,
+            let selfSender = self.selfSender,
+            let messageId = createMessageId() else {
+                return
         }
-        
-        print("\(text)")
-        // send message
-        
+
+        print("Sending: \(text)")
+
         let mmessage = Message(sender: selfSender,
                                messageId: messageId,
                                sentDate: Date(),
                                kind: .text(text))
-        
-        if isNewConversation{
-            // create convon in database
-            
-            
-            DatabaseManager.shared.createNewConversation(with: otherUserEmail,
-                                                         name : self.title ?? "User",
-                                                         firstMessage: mmessage,
-                                                         completion: { [weak self]success in
-                
-                if success{
+
+        // Send Message
+        if isNewConversation {
+            // create convo in database
+            DatabaseManager.shared.createNewConversation(with: otherUserEmail, name: self.title ?? "User", firstMessage: mmessage, completion: { [weak self]success in
+                if success {
                     print("message sent")
-                    
                     self?.isNewConversation = false
+                    let newConversationId = "conversation_\(mmessage.messageId)"
+                    self?.conversationId = newConversationId
+                    self?.listenForMessages(id: newConversationId, shouldScrollToBottom: true)
+                    self?.messageInputBar.inputTextView.text = nil
                 }
                 else {
-                    print("failed to send ")
+                    print("faield ot send")
                 }
             })
         }
-        else
-        {
-            
-            guard let conversationId = conversationId , let name = self.title else {
+        else {
+            guard let conversationId = conversationId, let name = self.title else {
                 return
             }
-            
-            //append to existing conversation data
-            
-            DatabaseManager.shared.sendMessage(to: conversationId , otherUserEmail: otherUserEmail, name : name, newMessage: mmessage , completion: {success in
-                
+
+            // append to existing conversation data
+            DatabaseManager.shared.sendMessage(to: conversationId, otherUserEmail: otherUserEmail, name: name, newMessage: mmessage, completion: { [weak self] success in
                 if success {
-                    //                    self?.messageInputBar.inputTextView.text = nil
+                    self?.messageInputBar.inputTextView.text = nil
                     print("message sent")
                 }
                 else {
                     print("failed to send")
                 }
             })
-            
-            print("checking")
         }
     }
-    
+
     private func createMessageId() -> String? {
-        
-        // date , otherUserEmail , senderEmail  , randomInt
-        
-        
-        
+        // date, otherUesrEmail, senderEmail, randomInt
         guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String else {
-            
             return nil
         }
-        
+
         let safeCurrentEmail = DatabaseManager.safeEmail(emailAddress: currentUserEmail)
-        
+
         let dateString = Self.dateFormatter.string(from: Date())
         let newIdentifier = "\(otherUserEmail)_\(safeCurrentEmail)_\(dateString)"
-        
-        print("created message id \(newIdentifier)")
+
+        print("created message id: \(newIdentifier)")
+
         return newIdentifier
     }
+
 }
 
 extension ChatViewController : MessagesDataSource , MessagesLayoutDelegate , MessagesDisplayDelegate {
@@ -539,6 +532,80 @@ extension ChatViewController : MessagesDataSource , MessagesLayoutDelegate , Mes
         default:
             break
         }
+    }
+    
+    
+    func backgroundColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
+        let sender = message.sender
+        if sender.senderId == selfSender?.senderId {
+            // our message that we've sent
+            return .link
+        }
+
+        return .secondarySystemBackground
+    }
+    
+    
+    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+
+        let sender = message.sender
+
+        if sender.senderId == selfSender?.senderId {
+            // show our image
+            if let currentUserImageURL = self.senderPhotoURL {
+                avatarView.sd_setImage(with: currentUserImageURL, completed: nil)
+            }
+            else {
+                // images/safeemail_profile_picture.png
+
+                guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
+                    return
+                }
+
+                let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
+                let path = "images/\(safeEmail)_profile_picture.png"
+
+                // fetch url
+                StorageManager.shared.downloadURL(for: path, completion: { [weak self] result in
+                    switch result {
+                    case .success(let url):
+                        self?.senderPhotoURL = url
+                        DispatchQueue.main.async {
+                            avatarView.sd_setImage(with: url, completed: nil)
+                        }
+                    case .failure(let error):
+                        print("\(error)")
+                    }
+                })
+            }
+        }
+        else {
+            // other user image
+            if let otherUsrePHotoURL = self.otherUserPhotoURL {
+                avatarView.sd_setImage(with: otherUsrePHotoURL, completed: nil)
+            }
+            else {
+                // fetch url
+                let email = self.otherUserEmail
+
+                let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
+                let path = "images/\(safeEmail)_profile_picture.png"
+
+                // fetch url
+                StorageManager.shared.downloadURL(for: path, completion: { [weak self] result in
+                    switch result {
+                    case .success(let url):
+                        self?.otherUserPhotoURL = url
+                        DispatchQueue.main.async {
+                            avatarView.sd_setImage(with: url, completed: nil)
+                        }
+                    case .failure(let error):
+                        print("\(error)")
+                    }
+                })
+            }
+        }
+
     }
     
 }
