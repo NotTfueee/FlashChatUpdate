@@ -11,26 +11,16 @@ import FBSDKLoginKit
 import SDWebImage
 
 
-enum ProfileViewModelType {
-    case info, logout
-}
-
-struct ProfileViewModel {
-    let viewModelType: ProfileViewModelType
-    let title: String
-    let handler: (() -> Void)?
-}
 
 
-class ProfileViewController: UIViewController {
-    
+final class ProfileViewController: UIViewController {
+
     @IBOutlet var tableView: UITableView!
-    
+
     var data = [ProfileViewModel]()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         tableView.register(ProfileTableViewCell.self,
                            forCellReuseIdentifier: ProfileTableViewCell.identifier)
 
@@ -59,7 +49,7 @@ class ProfileViewController: UIViewController {
 
                                             UserDefaults.standard.setValue(nil, forKey: "email")
                                             UserDefaults.standard.setValue(nil, forKey: "name")
- 
+
                                             // Log Out facebook
                                             FBSDKLoginKit.LoginManager().logOut()
 
@@ -91,8 +81,7 @@ class ProfileViewController: UIViewController {
         tableView.dataSource = self
         tableView.tableHeaderView = createTableHeader()
     }
-    
-    
+
     func createTableHeader() -> UIView? {
         guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
             return nil
@@ -107,7 +96,7 @@ class ProfileViewController: UIViewController {
                                         width: self.view.width,
                                         height: 300))
 
-        headerView.backgroundColor = .systemBackground
+        headerView.backgroundColor = .link
 
         let imageView = UIImageView(frame: CGRect(x: (headerView.width-150) / 2,
                                                   y: 75,
@@ -132,15 +121,14 @@ class ProfileViewController: UIViewController {
 
         return headerView
     }
-    
+
 }
 
-extension ProfileViewController: UITableViewDelegate , UITableViewDataSource{
-    
+extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return data.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let viewModel = data[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableViewCell.identifier,
@@ -148,14 +136,12 @@ extension ProfileViewController: UITableViewDelegate , UITableViewDataSource{
         cell.setUp(with: viewModel)
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
         data[indexPath.row].handler?()
     }
 }
-
 
 class ProfileTableViewCell: UITableViewCell {
 

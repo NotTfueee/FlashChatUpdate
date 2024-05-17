@@ -8,9 +8,8 @@
 import UIKit
 import SDWebImage
 
-class PhotoViewerViewController: UIViewController {
-    
-    
+final class PhotoViewerViewController: UIViewController {
+
     private let url: URL
 
     init(with url: URL) {
@@ -36,5 +35,11 @@ class PhotoViewerViewController: UIViewController {
         view.addSubview(imageView)
         imageView.sd_setImage(with: url, completed: nil)
     }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        imageView.frame = view.bounds
+    }
+
 
 }

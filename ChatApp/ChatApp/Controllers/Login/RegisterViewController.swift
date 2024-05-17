@@ -9,7 +9,7 @@ import UIKit
 import FirebaseAuth
 import JGProgressHUD
 
-class RegisterViewController: UIViewController {
+final class RegisterViewController: UIViewController {
     
     private let spinner = JGProgressHUD(style: .dark)
     
@@ -120,8 +120,18 @@ class RegisterViewController: UIViewController {
         return imageView
     }()
     
+    private var loginObserver: NSObjectProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loginObserver = NotificationCenter.default.addObserver(forName: .didLogInNotification, object: nil, queue: .main, using: { [weak self] _ in
+            guard let strongSelf = self else {
+                return
+            }
+
+            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+        })
         
         title = "Log In"
         view.backgroundColor = .systemBackground
@@ -153,6 +163,7 @@ class RegisterViewController: UIViewController {
                                               action: #selector(didTapChangeProfilePic))
         
         imageView.addGestureRecognizer(gesture)
+        
     }
     
     @objc private func didTapChangeProfilePic()
@@ -379,7 +390,7 @@ extension RegisterViewController : UIImagePickerControllerDelegate , UINavigatio
             return
         }
         
-        self.imageView.image = selectedImage
+        imageView.image = selectedImage
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

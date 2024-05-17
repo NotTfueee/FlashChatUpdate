@@ -8,23 +8,23 @@
 import Foundation
 import FirebaseStorage
 
-final class StorageManager{
-    
+/// Allows you to get, fetch, and upload files to firebase  storage
+final class StorageManager {
+
     static let shared = StorageManager()
-    
+
     private init() {}
-    
+
     private let storage = Storage.storage().reference()
-    
+
     /*
      /images/afraz9-gmail-com_profile_picture.png
      */
-    
+
     public typealias UploadPictureCompletion = (Result<String, Error>) -> Void
-    
-    ///uploads pictures to firebase storage and returns completion with url string to download
+
+    /// Uploads picture to firebase storage and returns completion with url string to download
     public func uploadProfilePicture(with data: Data, fileName: String, completion: @escaping UploadPictureCompletion) {
-        
         storage.child("images/\(fileName)").putData(data, metadata: nil, completion: { [weak self] metadata, error in
             guard let strongSelf = self else {
                 return
@@ -37,7 +37,6 @@ final class StorageManager{
                 return
             }
 
-            // check 
             strongSelf.storage.child("images/\(fileName)").downloadURL(completion: { url, error in
                 guard let url = url else {
                     print("Failed to get download url")
@@ -51,7 +50,7 @@ final class StorageManager{
             })
         })
     }
-    
+
     /// Upload image that will be sent in a conversation message
     public func uploadMessagePhoto(with data: Data, fileName: String, completion: @escaping UploadPictureCompletion) {
         storage.child("message_images/\(fileName)").putData(data, metadata: nil, completion: { [weak self] metadata, error in
@@ -75,8 +74,7 @@ final class StorageManager{
             })
         })
     }
-    
-    
+
     /// Upload video that will be sent in a conversation message
     public func uploadMessageVideo(with fileUrl: URL, fileName: String, completion: @escaping UploadPictureCompletion) {
         storage.child("message_videos/\(fileName)").putFile(from: fileUrl, metadata: nil, completion: { [weak self] metadata, error in
@@ -99,15 +97,13 @@ final class StorageManager{
                 completion(.success(urlString))
             })
         })
-    }   
-    
-    
+    }
+
     public enum StorageErrors: Error {
         case failedToUpload
         case failedToGetDownloadUrl
     }
-    
-    
+
     public func downloadURL(for path: String, completion: @escaping (Result<URL, Error>) -> Void) {
         
         let reference = storage.child("\(path)")
@@ -122,3 +118,30 @@ final class StorageManager{
         })
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
